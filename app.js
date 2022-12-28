@@ -7,14 +7,12 @@ const app = express();
 // Initialize an array to store the names of missing cryptos
 let missingCryptos = [];
 
-// Check if the 'missing-cryptos.txt' file exists
 if (fs.existsSync('missing-cryptos.txt')) {
 	// If the file exists, read the contents and split it into an array of strings
 	missingCryptos = fs.readFileSync('missing-cryptos.txt', 'utf8').split('\n');
 }
 
-// Set up a route to handle requests for crypto icons
-app.get('/cryptowave-api/icon/:symbol', (req, res) => {
+app.get('/icon/:symbol', (req, res) => {
 	// Get the crypto symbol from the request parameters
 	const symbol = req.params.symbol;
 
@@ -23,7 +21,8 @@ app.get('/cryptowave-api/icon/:symbol', (req, res) => {
 
 	// Check if the icon file exists
 	if (fs.existsSync(filePath)) {
-		// If the file exists, send it as a response
+		// If the file exists, send it as a response with cache-control headers set to cache the file for one day
+		res.setHeader('Cache-Control', 'public, max-age=86400');
 		res.sendFile(filePath);
 	} else {
 		// If the file does not exist, check if the symbol is already in the missingCryptos array
@@ -32,7 +31,8 @@ app.get('/cryptowave-api/icon/:symbol', (req, res) => {
 			missingCryptos.push(symbol);
 			fs.writeFileSync('missing-cryptos.txt', missingCryptos.join('\n'));
 		}
-		// Send the 'generic.png' icon as a response
+		// Send the 'generic.png' icon as a response with cache-control headers set to cache the file for one day
+		res.setHeader('Cache-Control', 'public, max-age=86400');
 		res.sendFile(__dirname + '/Icons/generic.png');
 	}
 });
