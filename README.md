@@ -10,3 +10,23 @@ In either case, a default icon is sent back as a response.
 
 This API could be useful for developers who are building applications that display information about cryptocurrencies and want to include icons for each currency.
 It allows you to easily retrieve icons for the cryptocurrencies they are interested in without having to worry about finding and storing the icons yourself.
+
+## API Reference
+
+#### Get item
+
+```http
+  GET https://cryptowave-api.onrender.com/icon/:symbol
+```
+
+| Parameter | Type     | Description                       | Example | Response |
+| :-------- | :------- | :-------------------------------- | :------- | :------- |
+| `symbol`      | `string` | **Required**. Symbol of item to fetch | btc, eth, usdt | PNG |
+
+#### Request example
+
+```http
+  GET https://cryptowave-api.onrender.com/icon/btc
+```
+![Btc logo example](Icons/btc.png)
+
