@@ -28,5 +28,5 @@ It allows you to easily retrieve icons for the cryptocurrencies they are interes
 ```http
   GET https://cryptowave-api.onrender.com/icon/btc
 ```
-![Btc logo example](Icons/btc.png)
+![Btc logo example](Icons/btc.png=75x75)
 
