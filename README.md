@@ -11,6 +11,7 @@ In either case, a default icon is sent back as a response.
 This API could be useful for developers who are building applications that display information about cryptocurrencies and want to include icons for each currency.
 It allows you to easily retrieve icons for the cryptocurrencies they are interested in without having to worry about finding and storing the icons yourself.
 
+
 ## API Reference
 
 #### Get item
@@ -30,3 +31,11 @@ It allows you to easily retrieve icons for the cryptocurrencies they are interes
 ```
 ![Btc logo example](Icons/btc.png)
 
+
+## Additional Information
+
+First request may take a bit longer to send a response due to the hosting.
+
+I'm using Render.com free plan to deploy a webservice so after 15mins of inactivity, the service shut down waiting for a new request to process.
+
+So it might take 30s to 1mn to get a response.
