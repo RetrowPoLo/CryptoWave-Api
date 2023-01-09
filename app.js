@@ -1,8 +1,22 @@
 const express = require('express');
 const fs = require('fs');
+const { Octokit } = require('@octokit/rest');
+
+require('dotenv').config();
 
 // Create a new Express app
 const app = express();
+
+const octokit = new Octokit({
+	auth: process.env.GITHUB_TOKEN,
+});
+
+const owner = 'RetrowPoLo';
+const repo = 'CryptoWave-Api';
+const path = 'missing-cryptos.txt';
+const message = 'Add missing crypto icons';
+const content = Buffer.from(fs.readFileSync('missing-cryptos.txt')).toString('base64');
+const branch = 'missing-cryptos';
 
 // Initialize an array to store the names of missing cryptos
 let missingCryptos = [];
@@ -31,6 +45,17 @@ app.get('/icon/:symbol', (req, res) => {
 			missingCryptos.push(symbol);
 			fs.writeFileSync('missing-cryptos.txt', missingCryptos.join('\n'));
 		}
+
+		// Push the updated 'missing-cryptos.txt' to the github repo in a specific branch
+		octokit.repos.createOrUpdateFileContents({
+			owner,
+			repo,
+			path,
+			message,
+			content,
+			branch,
+		});
+
 		// Send the 'generic.png' icon as a response with cache-control headers set to cache the file for one day
 		res.setHeader('Cache-Control', 'public, max-age=86400');
 		res.sendFile(__dirname + '/Icons/generic.png');
