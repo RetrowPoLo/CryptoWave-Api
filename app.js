@@ -34,7 +34,15 @@ async function gitPullChanges() {
 
 // Function to add and commit the "missing-cryptos.txt" file
 async function gitAddCommit() {
-	await exec('git add missing-cryptos.txt && git commit -m "Add missing crypto icons"', (error, stdout, stderr) => {
+	await exec('git add missing-cryptos.txt"', (error, stdout, stderr) => {
+		if (error) {
+			console.error(`exec error: ${error}`);
+			return;
+		}
+		console.log(`stdout: ${stdout}`);
+		console.error(`stderr: ${stderr}`);
+	});
+	await exec('git commit -m "Add missing crypto icons"', (error, stdout, stderr) => {
 		if (error) {
 			console.error(`exec error: ${error}`);
 			return;
