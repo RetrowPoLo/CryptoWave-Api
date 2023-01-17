@@ -1,25 +1,60 @@
 const express = require('express');
 const fs = require('fs');
-const { Octokit } = require('@octokit/rest');
-
-require('dotenv').config();
+const { exec } = require('child_process');
 
 // Create a new Express app
 const app = express();
 
-const octokit = new Octokit({
-	auth: process.env.GITHUB_TOKEN,
-});
-
-const owner = 'RetrowPoLo';
-const repo = 'CryptoWave-Api';
-const path = 'missing-cryptos.txt';
-const message = 'Add missing crypto icons';
-const content = Buffer.from(fs.readFileSync('missing-cryptos.txt')).toString('base64');
-const branch = 'missing-cryptos';
-
 // Initialize an array to store the names of missing cryptos
 let missingCryptos = [];
+
+// Function to switch to the "missing-cryptos" branch
+async function gitSwitchBranch() {
+	await exec('git checkout test-branch', (error, stdout, stderr) => {
+		if (error) {
+			console.error(`exec error: ${error}`);
+			return;
+		}
+		console.log(`stdout: ${stdout}`);
+		console.error(`stderr: ${stderr}`);
+	});
+}
+
+// Function to pull the latest changes
+async function gitPullChanges() {
+	await exec('git pull', (error, stdout, stderr) => {
+		if (error) {
+			console.error(`exec error: ${error}`);
+			return;
+		}
+		console.log(`stdout: ${stdout}`);
+		console.error(`stderr: ${stderr}`);
+	});
+}
+
+// Function to add and commit the "missing-cryptos.txt" file
+async function gitAddCommit() {
+	await exec('git add missing-cryptos.txt && git commit -m "Add missing crypto icons"', (error, stdout, stderr) => {
+		if (error) {
+			console.error(`exec error: ${error}`);
+			return;
+		}
+		console.log(`stdout: ${stdout}`);
+		console.error(`stderr: ${stderr}`);
+	});
+}
+
+// Function to push the changes to the remote repository
+async function gitPushChanges() {
+	await exec('git push origin test-branch', (error, stdout, stderr) => {
+		if (error) {
+			console.error(`exec error: ${error}`);
+			return;
+		}
+		console.log(`stdout: ${stdout}`);
+		console.error(`stderr: ${stderr}`);
+	});
+}
 
 if (fs.existsSync('missing-cryptos.txt')) {
 	// If the file exists, read the contents and split it into an array of strings
@@ -45,20 +80,14 @@ app.get('/icon/:symbol', (req, res) => {
 			missingCryptos.push(symbol);
 			fs.writeFileSync('missing-cryptos.txt', missingCryptos.join('\n'));
 		}
-
-		// Push the updated 'missing-cryptos.txt' to the github repo in a specific branch
-		octokit.repos.createOrUpdateFileContents({
-			owner,
-			repo,
-			path,
-			message,
-			content,
-			branch,
-		});
-
 		// Send the 'generic.png' icon as a response with cache-control headers set to cache the file for one day
 		res.setHeader('Cache-Control', 'public, max-age=86400');
 		res.sendFile(__dirname + '/Icons/generic.png');
+
+		gitSwitchBranch();
+		gitPullChanges();
+		gitAddCommit();
+		gitPushChanges();
 	}
 });
 
