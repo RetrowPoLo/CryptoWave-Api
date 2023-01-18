@@ -10,8 +10,10 @@ let missingCryptos = [];
 
 // Function to switch to the "missing-cryptos" branch
 async function gitSwitchBranch() {
-	await exec('git checkout test-branch', (error, stdout, stderr) => {
-		if (error) {
+	exec('git checkout test-branch', (error, stdout, stderr) => {
+		if (error && error.message.includes('Already')) {
+			return;
+		} else {
 			console.error(`exec error: ${error}`);
 			return;
 		}
@@ -22,7 +24,7 @@ async function gitSwitchBranch() {
 
 // Function to pull the latest changes
 async function gitPullChanges() {
-	await exec('git pull', (error, stdout, stderr) => {
+	exec('git pull', (error, stdout, stderr) => {
 		if (error) {
 			console.error(`exec error: ${error}`);
 			return;
@@ -34,7 +36,7 @@ async function gitPullChanges() {
 
 // Function to add and commit the "missing-cryptos.txt" file
 async function gitAddCommit() {
-	await exec('git add missing-cryptos.txt"', (error, stdout, stderr) => {
+	exec('git add missing-cryptos.txt', (error, stdout, stderr) => {
 		if (error) {
 			console.error(`exec error: ${error}`);
 			return;
@@ -42,7 +44,7 @@ async function gitAddCommit() {
 		console.log(`stdout: ${stdout}`);
 		console.error(`stderr: ${stderr}`);
 	});
-	await exec('git commit -m "Add missing crypto icons"', (error, stdout, stderr) => {
+	exec('git commit -m "Add missing crypto icons"', (error, stdout, stderr) => {
 		if (error) {
 			console.error(`exec error: ${error}`);
 			return;
@@ -54,7 +56,7 @@ async function gitAddCommit() {
 
 // Function to push the changes to the remote repository
 async function gitPushChanges() {
-	await exec('git push origin test-branch', (error, stdout, stderr) => {
+	exec('git push origin test-branch', (error, stdout, stderr) => {
 		if (error) {
 			console.error(`exec error: ${error}`);
 			return;
@@ -69,7 +71,7 @@ if (fs.existsSync('missing-cryptos.txt')) {
 	missingCryptos = fs.readFileSync('missing-cryptos.txt', 'utf8').split('\n');
 }
 
-app.get('/icon/:symbol', (req, res) => {
+app.get('/icon/:symbol', async (req, res) => {
 	// Get the crypto symbol from the request parameters
 	const symbol = req.params.symbol;
 
@@ -92,10 +94,19 @@ app.get('/icon/:symbol', (req, res) => {
 		res.setHeader('Cache-Control', 'public, max-age=86400');
 		res.sendFile(__dirname + '/Icons/generic.png');
 
-		gitSwitchBranch();
-		gitPullChanges();
-		gitAddCommit();
-		gitPushChanges();
+		console.log('================');
+		console.log('Switch branch');
+		await gitSwitchBranch();
+		console.log('================');
+		console.log('Pull');
+		await gitPullChanges();
+		console.log('================');
+		console.log('Add then commit');
+		await gitAddCommit();
+		console.log('================');
+		console.log('Push');
+		await gitPushChanges();
+		console.log('================');
 	}
 });
 
