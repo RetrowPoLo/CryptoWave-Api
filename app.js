@@ -25,7 +25,9 @@ async function gitSwitchBranch() {
 // Function to pull the latest changes
 async function gitPullChanges() {
 	exec('git pull', (error, stdout, stderr) => {
-		if (error) {
+		if (error && error.message.includes('Already')) {
+			return;
+		} else {
 			console.error(`exec error: ${error}`);
 			return;
 		}
