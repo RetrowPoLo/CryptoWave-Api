@@ -24,9 +24,9 @@ async function gitPullChanges() {
 }
 
 // Async function to add and commit a missing crypto icon file
-async function gitAddCommit(crypto) {
+async function gitAddCommit() {
 	await simpleGit().add('missing-cryptos.txt');
-	await simpleGit().commit(`Add missing crypto icons ${crypto}`);
+	await simpleGit().commit('Add missing crypto icons');
 }
 
 // Async function to push the changes to the specified branch
@@ -75,7 +75,7 @@ app.get('/icon/:symbol', async (req, res) => {
 			res.sendFile(__dirname + '/Icons/generic.png');
 
 			// Add and commit file to the branch
-			await handleGitAction(gitAddCommit(symbol));
+			await handleGitAction(gitAddCommit);
 
 			// Push the change to the branch
 			await handleGitAction(gitPushChanges);
