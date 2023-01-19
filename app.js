@@ -72,6 +72,13 @@ if (fs.existsSync('missing-cryptos.txt')) {
 }
 
 app.get('/icon/:symbol', async (req, res) => {
+	console.log('================');
+	console.log('Switch branch');
+	await gitSwitchBranch();
+	console.log('================');
+	console.log('Pull');
+	await gitPullChanges();
+
 	// Get the crypto symbol from the request parameters
 	const symbol = req.params.symbol;
 
@@ -94,12 +101,6 @@ app.get('/icon/:symbol', async (req, res) => {
 		res.setHeader('Cache-Control', 'public, max-age=86400');
 		res.sendFile(__dirname + '/Icons/generic.png');
 
-		console.log('================');
-		console.log('Switch branch');
-		await gitSwitchBranch();
-		console.log('================');
-		console.log('Pull');
-		await gitPullChanges();
 		console.log('================');
 		console.log('Add then commit');
 		await gitAddCommit();
