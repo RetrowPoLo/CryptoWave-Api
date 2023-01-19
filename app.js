@@ -1,6 +1,6 @@
-import express from 'express';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { simpleGit, CleanOptions } from 'simple-git';
+const express = require('express');
+const fs = require('fs');
+const simpleGit = require('simple-git');
 
 simpleGit().clean(CleanOptions.FORCE);
 
