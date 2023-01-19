@@ -1,5 +1,8 @@
 import express from 'express';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { simpleGit, CleanOptions } from 'simple-git';
+
+simpleGit().clean(CleanOptions.FORCE);
 
 // Create a new Express app
 const app = express();
@@ -10,6 +13,23 @@ let missingCryptos = [];
 if (existsSync('missing-cryptos.txt')) {
 	// If the file exists, read the contents and split it into an array of strings
 	missingCryptos = readFileSync('missing-cryptos.txt', 'utf8').split('\n');
+}
+
+async function gitSwitchBranch() {
+	await simpleGit().checkout('test-branch');
+}
+
+async function gitPullChanges() {
+	await simpleGit().pull();
+}
+
+async function gitAddCommit() {
+	await simpleGit().add('missing-cryptos.txt');
+	await simpleGit().commit('Add missing crypto icons');
+}
+
+async function gitPushChanges() {
+	await simpleGit().push('origin', 'test-branch');
 }
 
 app.get('/icon/:symbol', async (req, res) => {
@@ -25,6 +45,8 @@ app.get('/icon/:symbol', async (req, res) => {
 		res.setHeader('Cache-Control', 'public, max-age=86400');
 		res.sendFile(filePath);
 	} else {
+		gitSwitchBranch();
+		gitPullChanges();
 		// If the file does not exist, check if the symbol is already in the missingCryptos array
 		if (!missingCryptos.includes(symbol)) {
 			// If the symbol is not in the array, add it to the array and write the array to the 'missing-cryptos.txt' file
@@ -34,6 +56,9 @@ app.get('/icon/:symbol', async (req, res) => {
 		// Send the 'generic.png' icon as a response with cache-control headers set to cache the file for one day
 		res.setHeader('Cache-Control', 'public, max-age=86400');
 		res.sendFile(__dirname + '/Icons/generic.png');
+
+		gitAddCommit();
+		gitPushChanges();
 	}
 });
 
