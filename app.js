@@ -44,6 +44,12 @@ async function handleGitAction(gitAction) {
 	}
 }
 
+// GET route for the root path
+app.get('/', (req, res) => {
+	res.send('CryptoWaveAPI is running ✅ ');
+});
+
+// GET route for the icon path
 app.get('/icon/:symbol', async (req, res) => {
 	try {
 		// Get the crypto symbol from the request parameters
