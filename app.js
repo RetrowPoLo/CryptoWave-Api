@@ -7,6 +7,7 @@ const app = express();
 
 // Initialize an array to store the names of missing cryptos
 let missingCryptos = [];
+let githubBranch = 'missing-cryptos';
 
 if (fs.existsSync('missing-cryptos.txt')) {
 	// If the file exists, read the contents and split it into an array of strings
@@ -15,7 +16,7 @@ if (fs.existsSync('missing-cryptos.txt')) {
 
 // Async function to switch to the specified branch
 async function gitSwitchBranch() {
-	await simpleGit().checkout('test-branch');
+	await simpleGit().checkout(githubBranch);
 }
 
 // Async function to pull the latest changes from the specified branch
@@ -31,7 +32,7 @@ async function gitAddCommit() {
 
 // Async function to push the changes to the specified branch
 async function gitPushChanges() {
-	await simpleGit().push('origin', 'test-branch');
+	await simpleGit().push('origin', githubBranch);
 }
 
 // Async Function to handle git actions and catch any errors
