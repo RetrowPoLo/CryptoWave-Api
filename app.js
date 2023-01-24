@@ -36,7 +36,7 @@ async function gitPushChanges() {
 }
 
 // Async Function to handle git actions and catch any errors
-async function handleGitAction(gitAction) {
+async function handleGitAction(gitAction, res) {
 	try {
 		await gitAction();
 	} catch (err) {
@@ -66,10 +66,10 @@ app.get('/icon/:symbol', async (req, res) => {
 			res.sendFile(filePath);
 		} else {
 			// Switch the git branch
-			await handleGitAction(gitSwitchBranch);
+			await handleGitAction(gitSwitchBranch, res);
 
 			// Pull any changes from the current git branch
-			await handleGitAction(gitPullChanges);
+			await handleGitAction(gitPullChanges, res);
 
 			// If the file does not exist, check if the symbol is already in the missingCryptos array
 			if (!missingCryptos.includes(symbol)) {
@@ -82,10 +82,10 @@ app.get('/icon/:symbol', async (req, res) => {
 			res.sendFile(__dirname + '/Icons/generic.png');
 
 			// Add and commit file to the branch
-			await handleGitAction(gitAddCommit);
+			await handleGitAction(gitAddCommit, res);
 
 			// Push the change to the branch
-			await handleGitAction(gitPushChanges);
+			await handleGitAction(gitPushChanges, res);
 		}
 	} catch (err) {
 		console.error(err);
