@@ -1,48 +1,15 @@
 const express = require('express');
 const fs = require('fs');
-const simpleGit = require('simple-git');
 
 // Create a new Express app
 const app = express();
 
 // Initialize an array to store the names of missing cryptos
 let missingCryptos = [];
-let githubBranch = 'missing-cryptos';
 
 if (fs.existsSync('missing-cryptos.txt')) {
 	// If the file exists, read the contents and split it into an array of strings
 	missingCryptos = fs.readFileSync('missing-cryptos.txt', 'utf8').split('\n');
-}
-
-// Async function to switch to the specified branch
-async function gitSwitchBranch() {
-	await simpleGit().checkout(githubBranch);
-}
-
-// Async function to pull the latest changes from the specified branch
-async function gitPullChanges() {
-	await simpleGit().pull();
-}
-
-// Async function to add and commit a missing crypto icon file
-async function gitAddCommit() {
-	await simpleGit().add('missing-cryptos.txt');
-	await simpleGit().commit('Add missing crypto icons');
-}
-
-// Async function to push the changes to the specified branch
-async function gitPushChanges() {
-	await simpleGit().push('origin', githubBranch);
-}
-
-// Async Function to handle git actions and catch any errors
-async function handleGitAction(gitAction, res) {
-	try {
-		await gitAction();
-	} catch (err) {
-		console.error(err);
-		res.status(500).send({ error: 'Failed to execute git action' });
-	}
 }
 
 // GET route for the root path
@@ -65,12 +32,6 @@ app.get('/icon/:symbol', async (req, res) => {
 			res.setHeader('Cache-Control', 'public, max-age=86400');
 			res.sendFile(filePath);
 		} else {
-			// Switch the git branch
-			await handleGitAction(gitSwitchBranch, res);
-
-			// Pull any changes from the current git branch
-			await handleGitAction(gitPullChanges, res);
-
 			// If the file does not exist, check if the symbol is already in the missingCryptos array
 			if (!missingCryptos.includes(symbol)) {
 				// If the symbol is not in the array, add it to the array and write the array to the 'missing-cryptos.txt' file
@@ -80,16 +41,12 @@ app.get('/icon/:symbol', async (req, res) => {
 			// Send the 'generic.png' icon as a response with cache-control headers set to cache the file for one day
 			res.setHeader('Cache-Control', 'public, max-age=86400');
 			res.sendFile(__dirname + '/Icons/generic.png');
-
-			// Add and commit file to the branch
-			await handleGitAction(gitAddCommit, res);
-
-			// Push the change to the branch
-			await handleGitAction(gitPushChanges, res);
 		}
 	} catch (err) {
 		console.error(err);
-		res.status(500).send({ error: 'An error occurred while handling the request' });
+		res.status(500).send({
+			error: 'An error occurred while handling the request',
+		});
 	}
 });
 

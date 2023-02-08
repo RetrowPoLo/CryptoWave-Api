@@ -1,6 +1,5 @@
 ![Uptime Robot Status](https://img.shields.io/uptimerobot/status/m793532837-183edab2f183d5b96e8d2653)
 
-
 # CryptoWave Icons Api
 
 This API allows you to request cryptocurrency icons by symbol.
@@ -22,9 +21,9 @@ It allows you to easily retrieve icons for the cryptocurrencies they are interes
     GET https://cryptowave-api.onrender.com/
 ```
 
-| Parameter | Type     | Description                 | Response |
-| :-------- | :------- | :----------                 | :------- |
-| `none`    | `none`   | Check if the api is running | CryptoWaveAPI is running ✅ |
+| Parameter | Type   | Description                 | Response                    |
+| :-------- | :----- | :-------------------------- | :-------------------------- |
+| `none`    | `none` | Check if the api is running | CryptoWaveAPI is running ✅ |
 
 ### Get item
 
@@ -32,17 +31,17 @@ It allows you to easily retrieve icons for the cryptocurrencies they are interes
   GET https://cryptowave-api.onrender.com/icon/:symbol
 ```
 
-| Parameter | Type     | Description                       | Example | Response |
-| :-------- | :------- | :-------------------------------- | :------- | :------- |
-| `symbol`      | `string` | **Required**. Symbol of item to fetch | btc, eth, usdt | PNG |
+| Parameter | Type     | Description                           | Example        | Response |
+| :-------- | :------- | :------------------------------------ | :------------- | :------- |
+| `symbol`  | `string` | **Required**. Symbol of item to fetch | btc, eth, usdt | PNG      |
 
 #### Request example
 
 ```http
   GET https://cryptowave-api.onrender.com/icon/btc
 ```
-![Btc logo example](Icons/btc.png)
 
+![Btc logo example](Icons/btc.png)
 
 ## Run Locally
 
@@ -64,9 +63,7 @@ Start the server
   npm start
 ```
 
-
 ## Additional Information
-
 
 First request may take a bit longer to send a response due to the hosting.
 
@@ -76,4 +73,4 @@ So it might take 30s to 1mn to get a response.
 
 ## 🛠 Tech Stack
 
-NodeJs, Express 
+NodeJs, Express
