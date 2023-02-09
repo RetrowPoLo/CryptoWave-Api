@@ -17,7 +17,7 @@ It allows you to easily retrieve icons for the cryptocurrencies they are interes
 
 ### Get health
 
-```http
+```sh
     GET https://cryptowave-api.onrender.com/
 ```
 
@@ -27,7 +27,7 @@ It allows you to easily retrieve icons for the cryptocurrencies they are interes
 
 ### Get item
 
-```http
+```sh
   GET https://cryptowave-api.onrender.com/icon/:symbol
 ```
 
@@ -37,7 +37,7 @@ It allows you to easily retrieve icons for the cryptocurrencies they are interes
 
 #### Request example
 
-```http
+```sh
   GET https://cryptowave-api.onrender.com/icon/btc
 ```
 
