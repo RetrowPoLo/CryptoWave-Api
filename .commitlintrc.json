@@ -14,57 +14,57 @@
 			"type": {
 				"description": "Choisissez le type de modification que concerne votre commit :",
 				"enum": {
-					"feat": {
+					"✨ feat": {
 						"description": "Ajout/mise à jour de fonctionnalité",
 						"title": "Features",
 						"emoji": "✨"
 					},
-					"fix": {
+					"🐛 fix": {
 						"description": "Correction de bug",
 						"title": "Bug Fixes",
 						"emoji": "🐛"
 					},
-					"docs": {
+					"📚 docs": {
 						"description": "Ajout/modif. de documentation",
 						"title": "Documentation",
 						"emoji": "📚"
 					},
-					"style": {
+					"💎 style": {
 						"description": "Modifs de style et de mise en forme du code (espacements, virgules, etc.)",
 						"title": "Styles",
 						"emoji": "💎"
 					},
-					"refactor": {
+					"📦 refactor": {
 						"description": "Modif. des sources n’étant ni un correctif, ni un ajout de fonctionnalité",
 						"title": "Code Refactoring",
 						"emoji": "📦"
 					},
-					"perf": {
+					"🚀 perf": {
 						"description": "Amélioration de la performance",
 						"title": "Performance Improvements",
 						"emoji": "🚀"
 					},
-					"test": {
+					"🚨 test": {
 						"description": "Ajout ou correction de tests",
 						"title": "Tests",
 						"emoji": "🚨"
 					},
-					"build": {
+					"🛠 build": {
 						"description": "Modif. affectant le 'build' ou les dépendances externes (exemples de contextes :  webpack, broccoli, npm)",
 						"title": "Builds",
 						"emoji": "🛠"
 					},
-					"ci": {
+					"⚙️ ci": {
 						"description": "Modif. de la configuration ou des scripts liés à la CI (Travis, Circle, BrowserStack, SauceLabs, etc.)",
 						"title": "Continuous Integrations",
 						"emoji": "⚙️"
 					},
-					"chore": {
+					"♻️ chore": {
 						"description": "Autres mises à jour ne modifiant ni les sources, ni les tests",
 						"title": "Chores",
 						"emoji": "♻️"
 					},
-					"revert": {
+					"🗑 revert": {
 						"description": "Annuler (revert) un commit précédent",
 						"title": "Revert",
 						"emoji": "🗑"
