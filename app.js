@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const fs = require('fs');
 const Octo = require('octonode');
+
 const client = Octo.client(process.env.GITHUB_TOKEN);
 
 const repo = client.repo('RetrowPoLo/CryptoWave-Api');
@@ -54,10 +55,10 @@ app.get('/', (req, res) => {
 app.get('/icon/:symbol', async (req, res) => {
 	try {
 		// Get the crypto symbol from the request parameters
-		const symbol = req.params.symbol;
+		const { symbol } = req.params;
 
 		// Construct the path to the crypto icon file
-		const filePath = __dirname + '/Icons/' + symbol + '.png';
+		const filePath = `${__dirname}/Icons/${symbol}.png`;
 
 		// Check if the icon file exists
 		if (fs.existsSync(filePath)) {
@@ -72,7 +73,7 @@ app.get('/icon/:symbol', async (req, res) => {
 			}
 			// Send the 'generic.png' icon as a response with cache-control headers set to cache the file for one day
 			res.setHeader('Cache-Control', 'public, max-age=86400');
-			res.sendFile(__dirname + '/Icons/generic.png');
+			res.sendFile(`${__dirname}/Icons/generic.png`);
 		}
 	} catch (err) {
 		console.error(err);
