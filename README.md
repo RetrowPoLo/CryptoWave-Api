@@ -9,6 +9,7 @@ If the file exists, it is sent back as a response.
 If the file does not exist, the API checks if the symbol has already been recorded in a text file.
 If the symbol is not in the text file, it is added to the file.
 In either case, a default icon is sent back as a response.
+It also create an issue if an icon is missing so I can add it after.
 
 This API could be useful for developers who are building applications that display information about cryptocurrencies and want to include icons for each currency.
 It allows you to easily retrieve icons for the cryptocurrencies they are interested in without having to worry about finding and storing the icons yourself.
