@@ -6,7 +6,15 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"prettier": "prettier --write .",
-		"start": "node app.js"
+		"start": "node app.js",
+		"prepare": "husky install",
+		"lint:check": "eslint ./",
+		"lint:fix": "eslint ./ --fix"
+	},
+	"config": {
+		"commitizen": {
+			"path": "@commitlint/cz-commitlint"
+		}
 	},
 	"repository": {
 		"type": "git",
@@ -24,6 +32,16 @@
 		"octonode": "^0.10.2"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^17.4.3",
+		"@commitlint/config-conventional": "^17.4.3",
+		"@commitlint/cz-commitlint": "^17.4.2",
+		"commitizen": "^4.3.0",
+		"eslint": "^8.34.0",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-config-prettier": "^8.6.0",
+		"eslint-plugin-import": "^2.27.5",
+		"eslint-plugin-prettier": "^4.2.1",
+		"husky": "^8.0.3",
 		"prettier": "2.8.4"
 	}
 }
